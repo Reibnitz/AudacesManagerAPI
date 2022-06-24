@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AudacesManagerAPI.Models
+﻿namespace AudacesManagerAPI.Dtos.Modelo
 {
-    public class Modelo
+    public class ReadModeloDto
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Responsavel { get; set; }

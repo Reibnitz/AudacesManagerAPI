@@ -1,4 +1,5 @@
 ﻿using AudacesManagerAPI.Data;
+using AudacesManagerAPI.Interfaces;
 using AudacesManagerAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +7,7 @@ namespace AudacesManagerAPI.Controllers
 {
     [ApiController]
     [Route("modelos")]
-    public class ModeloController : ControllerBase
+    public class ModeloController : ControllerBase, IController<Modelo>
     {
         private ApiContext _context;
 
@@ -15,36 +16,36 @@ namespace AudacesManagerAPI.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public IActionResult Adicionar(Modelo modelo)
-        {
-
-            _context.Modelos.Add(modelo);
-            _context.SaveChanges();
-
-            return CreatedAtAction(nameof(ListarModelos), new { Id = modelo.Id }, modelo);
-        }
 
         [HttpGet]
-        public IActionResult ListarModelos()
+        public IActionResult Listar()
         {
             return Ok(_context.Modelos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult BuscarModeloPorId(int id)
+        public IActionResult BuscarPorId(int id)
         {
-            Modelo modelo = _context.Modelos.FirstOrDefault(modelo => modelo.Id == id);
+            Modelo? modelo = _context.Modelos.FirstOrDefault(modelo => modelo.Id == id);
             if (modelo == null)
                 return NotFound();
 
             return Ok(modelo);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult EditarModelo(int id, [FromBody] Modelo modeloNovo)
+        [HttpPost]
+        public IActionResult Adicionar(Modelo modelo)
         {
-            Modelo modelo = _context.Modelos.FirstOrDefault(modelo => modelo.Id == id);
+            _context.Modelos.Add(modelo);
+            _context.SaveChanges();
+
+            return CreatedAtAction(nameof(Listar), new { Id = modelo.Id }, modelo);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Editar(int id, [FromBody] Modelo modeloNovo)
+        {
+            Modelo? modelo = _context.Modelos.FirstOrDefault(modelo => modelo.Id == id);
             if (modelo == null)
                 return NotFound();
 
@@ -61,9 +62,9 @@ namespace AudacesManagerAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult RemoverModelo(int id)
+        public IActionResult Remover(int id)
         {
-            Modelo modelo = _context.Modelos.FirstOrDefault(modelo => modelo.Id == id);
+            Modelo? modelo = _context.Modelos.FirstOrDefault(modelo => modelo.Id == id);
             if (modelo == null)
                 return NotFound();
 

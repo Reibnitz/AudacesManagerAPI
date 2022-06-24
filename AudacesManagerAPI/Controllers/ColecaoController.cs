@@ -1,4 +1,5 @@
 ﻿using AudacesManagerAPI.Data;
+using AudacesManagerAPI.Interfaces;
 using AudacesManagerAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +7,7 @@ namespace AudacesManagerAPI.Controllers
 {
     [ApiController]
     [Route("colecoes")]
-    public class ColecaoController : ControllerBase
+    public class ColecaoController : ControllerBase, IController<Colecao>
     {
         private ApiContext _context;
 
@@ -15,35 +16,36 @@ namespace AudacesManagerAPI.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public IActionResult Adicionar(Colecao colecao)
-        {
-            _context.Colecoes.Add(colecao);
-            _context.SaveChanges();
-
-            return CreatedAtAction(nameof(ListarColecoes), new { Id = colecao.Id }, colecao);
-        }
 
         [HttpGet]
-        public IActionResult ListarColecoes()
+        public IActionResult Listar()
         {
             return Ok(_context.Colecoes);
         }
 
         [HttpGet("{id}")]
-        public IActionResult BuscarColecaoPorId(int id)
+        public IActionResult BuscarPorId(int id)
         {
-            Colecao colecao = _context.Colecoes.FirstOrDefault(colecao => colecao.Id == id);
+            Colecao? colecao = _context.Colecoes.FirstOrDefault(colecao => colecao.Id == id);
             if (colecao == null)
                 return NotFound();
 
             return Ok(colecao);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult EditarColecao(int id, [FromBody]Colecao colecaoNova)
+        [HttpPost]
+        public IActionResult Adicionar(Colecao colecao)
         {
-            Colecao colecao = _context.Colecoes.FirstOrDefault(colecao => colecao.Id == id);
+            _context.Colecoes.Add(colecao);
+            _context.SaveChanges();
+
+            return CreatedAtAction(nameof(Listar), new { Id = colecao.Id }, colecao);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Editar(int id, [FromBody]Colecao colecaoNova)
+        {
+            Colecao? colecao = _context.Colecoes.FirstOrDefault(colecao => colecao.Id == id);
             if (colecao == null)
                 return NotFound();
 
@@ -60,9 +62,9 @@ namespace AudacesManagerAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult RemoverColecao(int id)
+        public IActionResult Remover(int id)
         {
-            Colecao colecao = _context.Colecoes.FirstOrDefault(colecao => colecao.Id == id);
+            Colecao? colecao = _context.Colecoes.FirstOrDefault(colecao => colecao.Id == id);
             if (colecao == null)
                 return NotFound();
 

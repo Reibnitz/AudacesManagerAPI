@@ -1,4 +1,5 @@
 ﻿using AudacesManagerAPI.Data.Dtos;
+using AudacesManagerAPI.Dtos.Colecao;
 using AudacesManagerAPI.Models;
 using AutoMapper;
 
@@ -8,8 +9,8 @@ namespace AudacesManagerAPI.Profiles
     {
         public ColecaoProfile()
         {
-            CreateMap<Colecao, ColecaoDto>();
-            CreateMap<ColecaoDto, Colecao>();
+            CreateMap<CreateColecaoDto, Colecao>();
+            CreateMap<Colecao, ReadColecaoDto>();
         }
     }
 }
