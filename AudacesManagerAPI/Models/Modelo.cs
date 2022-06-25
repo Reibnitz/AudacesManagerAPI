@@ -2,11 +2,8 @@
 
 namespace AudacesManagerAPI.Models
 {
-    public class Modelo
+    public class Modelo : Model
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
         public string Nome { get; set; }
         public string Responsavel { get; set; }
         public string Tipo { get; set; }
