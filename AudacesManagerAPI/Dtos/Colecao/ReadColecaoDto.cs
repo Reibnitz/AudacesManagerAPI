@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AudacesManagerAPI.Models
+﻿namespace AudacesManagerAPI.Dtos.Colecao
 {
-    public class Colecao : Model
+    public class ReadColecaoDto
     {
+        public int Id { get; set; }
         public string Nome { get; set; }
         public string Responsavel { get; set; }
         public string Estacao { get; set; }
