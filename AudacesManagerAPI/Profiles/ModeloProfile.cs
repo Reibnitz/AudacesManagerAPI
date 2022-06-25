@@ -1,4 +1,4 @@
-﻿using AudacesManagerAPI.Data.Dtos;
+﻿using AudacesManagerAPI.Dtos.Modelo;
 using AudacesManagerAPI.Models;
 using AutoMapper;
 
@@ -8,8 +8,8 @@ namespace AudacesManagerAPI.Profiles
     {
         public ModeloProfile()
         {
-            CreateMap<Modelo, ModeloDto>();
-            CreateMap<ModeloDto, Modelo>();
+            CreateMap<CreateModeloDto, Modelo>();
+            CreateMap<Modelo, ReadModeloDto>();
         }
     }
 }

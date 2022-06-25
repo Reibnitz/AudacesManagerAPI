@@ -13,6 +13,8 @@ builder.Services.AddDbContext<ApiContext>(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 var devCorsPolicy = "devCorsPolicy";
 builder.Services.AddCors(options =>

@@ -1,19 +1,23 @@
 ﻿using AudacesManagerAPI.Data;
+using AudacesManagerAPI.Dtos.Modelo;
 using AudacesManagerAPI.Interfaces;
 using AudacesManagerAPI.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AudacesManagerAPI.Controllers
 {
     [ApiController]
     [Route("modelos")]
-    public class ModeloController : ControllerBase, IController<Modelo>
+    public class ModeloController : ControllerBase, IController<CreateModeloDto>
     {
         private ApiContext _context;
+        private IMapper _mapper;
 
-        public ModeloController(ApiContext context)
+        public ModeloController(ApiContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
 
@@ -34,8 +38,10 @@ namespace AudacesManagerAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Adicionar(Modelo modelo)
+        public IActionResult Adicionar(CreateModeloDto modeloDto)
         {
+            Modelo modelo = _mapper.Map<Modelo>(modeloDto);
+
             _context.Modelos.Add(modelo);
             _context.SaveChanges();
 
@@ -43,19 +49,13 @@ namespace AudacesManagerAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Editar(int id, [FromBody] Modelo modeloNovo)
+        public IActionResult Editar(int id, [FromBody] CreateModeloDto modeloNovo)
         {
             Modelo? modelo = _context.Modelos.FirstOrDefault(modelo => modelo.Id == id);
             if (modelo == null)
                 return NotFound();
 
-            modelo.Nome = modeloNovo.Nome;
-            modelo.Responsavel = modeloNovo.Responsavel;
-            modelo.Tipo = modeloNovo.Tipo;
-            modelo.Colecao = modeloNovo.Colecao;
-            modelo.Bordado = modeloNovo.Bordado;
-            modelo.Estampa = modeloNovo.Estampa;
-
+            _mapper.Map(modeloNovo, modelo);
             _context.SaveChanges();
 
             return NoContent();

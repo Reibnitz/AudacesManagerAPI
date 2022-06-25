@@ -1,19 +1,23 @@
 ﻿using AudacesManagerAPI.Data;
+using AudacesManagerAPI.Dtos.Colecao;
 using AudacesManagerAPI.Interfaces;
 using AudacesManagerAPI.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AudacesManagerAPI.Controllers
 {
     [ApiController]
     [Route("colecoes")]
-    public class ColecaoController : ControllerBase, IController<Colecao>
+    public class ColecaoController : ControllerBase, IController<CreateColecaoDto>
     {
         private ApiContext _context;
+        private IMapper _mapper;
 
-        public ColecaoController(ApiContext context)
+        public ColecaoController(ApiContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
 
@@ -34,8 +38,9 @@ namespace AudacesManagerAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Adicionar(Colecao colecao)
+        public IActionResult Adicionar(CreateColecaoDto colecaoDto)
         {
+            Colecao colecao = _mapper.Map<Colecao>(colecaoDto);
             _context.Colecoes.Add(colecao);
             _context.SaveChanges();
 
@@ -43,19 +48,13 @@ namespace AudacesManagerAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Editar(int id, [FromBody]Colecao colecaoNova)
+        public IActionResult Editar(int id, [FromBody] CreateColecaoDto colecaoNova)
         {
             Colecao? colecao = _context.Colecoes.FirstOrDefault(colecao => colecao.Id == id);
             if (colecao == null)
                 return NotFound();
 
-            colecao.Nome = colecaoNova.Nome;
-            colecao.Responsavel = colecaoNova.Responsavel;
-            colecao.Estacao = colecaoNova.Estacao;
-            colecao.Marca = colecaoNova.Marca;
-            colecao.Orcamento = colecaoNova.Orcamento;
-            colecao.Ano = colecaoNova.Ano;
-
+            _mapper.Map(colecaoNova, colecao);
             _context.SaveChanges();
 
             return NoContent();

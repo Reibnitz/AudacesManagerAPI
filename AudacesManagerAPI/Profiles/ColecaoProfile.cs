@@ -1,5 +1,4 @@
-﻿using AudacesManagerAPI.Data.Dtos;
-using AudacesManagerAPI.Dtos.Colecao;
+﻿using AudacesManagerAPI.Dtos.Colecao;
 using AudacesManagerAPI.Models;
 using AutoMapper;
 
